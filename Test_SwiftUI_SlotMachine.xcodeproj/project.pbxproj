@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		213DA6A327977BC4000AD8BB /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213DA6A227977BC4000AD8BB /* Extensions.swift */; };
+		213DA6A527977BF6000AD8BB /* SlotMachineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213DA6A427977BF6000AD8BB /* SlotMachineView.swift */; };
 		216D9C0027976EAA000CE0B5 /* Test_SwiftUI_SlotMachineApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216D9BFF27976EAA000CE0B5 /* Test_SwiftUI_SlotMachineApp.swift */; };
 		216D9C0227976EAA000CE0B5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216D9C0127976EAA000CE0B5 /* ContentView.swift */; };
 		216D9C0427976EAF000CE0B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 216D9C0327976EAF000CE0B5 /* Assets.xcassets */; };
@@ -14,6 +16,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		213DA6A227977BC4000AD8BB /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		213DA6A427977BF6000AD8BB /* SlotMachineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlotMachineView.swift; sourceTree = "<group>"; };
 		216D9BFC27976EAA000CE0B5 /* Test_SwiftUI_SlotMachine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test_SwiftUI_SlotMachine.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		216D9BFF27976EAA000CE0B5 /* Test_SwiftUI_SlotMachineApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_SwiftUI_SlotMachineApp.swift; sourceTree = "<group>"; };
 		216D9C0127976EAA000CE0B5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -32,6 +36,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		213DA6A127977BAF000AD8BB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				216D9C0127976EAA000CE0B5 /* ContentView.swift */,
+				213DA6A427977BF6000AD8BB /* SlotMachineView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		216D9BF327976EAA000CE0B5 = {
 			isa = PBXGroup;
 			children = (
@@ -52,8 +65,9 @@
 			isa = PBXGroup;
 			children = (
 				216D9BFF27976EAA000CE0B5 /* Test_SwiftUI_SlotMachineApp.swift */,
-				216D9C0127976EAA000CE0B5 /* ContentView.swift */,
+				213DA6A127977BAF000AD8BB /* Views */,
 				216D9C0327976EAF000CE0B5 /* Assets.xcassets */,
+				213DA6A227977BC4000AD8BB /* Extensions.swift */,
 				216D9C0527976EAF000CE0B5 /* Preview Content */,
 			);
 			path = Test_SwiftUI_SlotMachine;
@@ -138,6 +152,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				216D9C0227976EAA000CE0B5 /* ContentView.swift in Sources */,
+				213DA6A327977BC4000AD8BB /* Extensions.swift in Sources */,
+				213DA6A527977BF6000AD8BB /* SlotMachineView.swift in Sources */,
 				216D9C0027976EAA000CE0B5 /* Test_SwiftUI_SlotMachineApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
