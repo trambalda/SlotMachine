@@ -17,7 +17,6 @@ struct ReelView: View {
                 Image(Reels.images[reel[index]])
                     .resizable()
                     .aspectRatio(1, contentMode: .fit)
-                    .frame(minWidth: 110, idealWidth: 140, maxWidth: 170)
                     .background(Color(Color.RGBColorSpace.sRGB, red: 0, green: 0, blue: 0, opacity: 0.1))
                     .cornerRadius(20)
                     .id(startIndex + index)

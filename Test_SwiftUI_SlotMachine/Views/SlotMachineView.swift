@@ -9,12 +9,26 @@ import SwiftUI
 
 struct SlotMachineView: View {
     @State private var isScrollDown = true
-    @State var reels: [[Int]]
+    @State private var reels: [[Int]]
     private let model = SlotMachineModel()
     
-    init() {
+    @Binding var balance: Int
+    @State private var bet = 25
+    private let betStep = 25
+    @State private var profit = 0
+    
+    init(_ balance: Binding<Int>) {
         _reels = State(initialValue: model.fillReelsWithNewData())
+        _balance = balance
     }
+    
+    private func changeBet(isIncrease: Bool) {
+        bet = isIncrease ? bet + betStep : bet - betStep
+        if bet < 25 { bet = 25 }
+        if bet > balance { bet = balance }
+    }
+    
+    // MARK: - SLOT ANIMATION
     
     private func scrollReels(value: ScrollViewProxy) {
         if isScrollDown {
@@ -39,36 +53,168 @@ struct SlotMachineView: View {
             }
         }
     }
+    
+    private func calculateHeight(width: CGFloat) -> CGFloat {
+        let padding = calculatePadding(width: width) / 2
+        return 3 * (width - CGFloat(padding)) / CGFloat(Reels.totalCount)
+    }
+    
+    private func calculatePadding(width: CGFloat) -> CGFloat {
+        return width < 400 ? 40 : 10
+    }
+
+    private func calculateInvertedPadding(width: CGFloat) -> CGFloat {
+        return width < 400 ? 0 : 40
+    }
+
+    // MARK: - BODY
 
     var body: some View {
         ZStack {
             Image("background")
                 .resizable()
                 .ignoresSafeArea(.all)
-            VStack {
-                GeometryReader { geometry in
+            GeometryReader { geometry in
+                VStack() {
+                    
+                    // MARK: - SLOT MACHINE
+                    
                     ScrollViewReader { value in
-                        HStack(spacing: 10) {
-                            ForEach(0 ..< Reels.totalCount) { index in
-                                ReelView(reel: $reels[index], startIndex: index * Reels.imagesPerReel)
+                        VStack {
+                            HStack() {
+                                ForEach(0 ..< Reels.totalCount) { index in
+                                    ReelView(reel: $reels[index], startIndex: index * Reels.imagesPerReel)
+                                }
                             }
-                        }
-                        .padding(5)
-                        .frame(height: geometry.size.width)
+                            .padding(calculatePadding(width: geometry.size.width))
+                            .frame(height: self.calculateHeight(width: geometry.size.width))
+                            
+                            // MARK: - BALANCE INFO
+                            
+                            HStack() {
+                                Text("BALANCE: \(balance.formattedWithSeparator)")
+                                    .font(.title)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                Image("coin_wo_border")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 35, height: 35)
+                            } // HStack
+                            .shadow(color: .black, radius: 1, x: 0, y: 0)
+                            .padding(.top, -calculatePadding(width: geometry.size.width))
+                        } // VStack
                         
-                        Button("Spin") {
+                        // MARK: - SPIN BUTTON
+                        
+                        Button {
                             reels = model.fillReelsWithNewData(isScrollDown)
                             scrollReels(value: value)
                             isScrollDown.toggle()
+                        } label: {
+                            ZStack {
+                                Image("spinButton")
+                                    .resizable()
+                                    .scaledToFit()
+                                Text("SPIN")
+                                    .font(.title2)
+                                    .fontWeight(.heavy)
+                                    .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 0x36/255, green: 0xb1/255, blue: 0, opacity: 1))
+                            }
+                            .background(
+                                Circle()
+                                    .foregroundColor(Color(Color.RGBColorSpace.sRGB, red: 0, green: 0, blue: 0, opacity: 0.4))
+                            )
+                            .shadow(color: .black, radius: 1, x: 0, y: 0)
+                            .frame(width: 100, height: 100)
+                            .padding(.bottom, calculateInvertedPadding(width: geometry.size.width))
                         }
-                        
                     } // ScrollViewReader
                     
-                } // GeometryReader
+                    
+                    // MARK: - CHANGE BET CONTROLS
+                    
+                    HStack {
+                        Button {
+                            changeBet(isIncrease: false)
+                        } label: {
+                            Text("-")
+                                .font(.title)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                        }.padding()
+                        VStack {
+                            Text("CURRENT BET")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                            HStack {
+                                Text("\(bet.formattedWithSeparator)")
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                Image("coin_wo_border")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 25, height: 25)
+                            }
+                        }
+                        Button {
+                            changeBet(isIncrease: true)
+                        } label: {
+                            Text("+")
+                                .font(.title)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                        }.padding()
+                    }
+                    .padding(.top, 10)
+                    .padding(.bottom, 10)
+                    .padding(.leading, 20)
+                    .padding(.trailing, 20)
+                    .background(Color(Color.RGBColorSpace.sRGB, red: 0, green: 0, blue: 0, opacity: 0.4))
+                    .cornerRadius(10)
+                    
+                    // MARK: - EXIT BUTTON & WIN INFO
+                    
+                    HStack(spacing: 40) {
+                        Button { } label: {
+                            Text("EXIT")
+                                .font(.title)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                                .frame(width: 160, height: 70)
+                        }
+                        .background(Color(Color.RGBColorSpace.sRGB, red: 0, green: 0, blue: 0, opacity: 0.4))
+                        .cornerRadius(10)
+                        
+                        VStack(spacing: 0) {
+                            Text("TOTAL WIN")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                            HStack {
+                                Text("\(profit.formattedWithSeparator)")
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.white)
+                                Image("coin_wo_border")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 25, height: 25)
+                            }
+                        }
+                        .frame(width: 160, height: 70)
+                        .background(Color(Color.RGBColorSpace.sRGB, red: 0, green: 0, blue: 0, opacity: 0.4))
+                        .cornerRadius(10)
+                    }
+                    .padding(.top, calculateInvertedPadding(width: geometry.size.width))
+                    
+                } // VStack
+                .padding(.top, calculateInvertedPadding(width: geometry.size.width))
                 
-            } // VStack
-            .padding(.top, 20)
-
+            } // GeometryReader
+            
         } // ZStack
         .navigationBarHidden(true)
         .statusBar(hidden: true)
@@ -78,6 +224,6 @@ struct SlotMachineView: View {
 
 struct SlotMachineView_Previews: PreviewProvider {
     static var previews: some View {
-        SlotMachineView()
+        SlotMachineView(.constant(16000))
     }
 }

@@ -51,7 +51,7 @@ struct ContentView: View {
                     .padding(.top, 26)
                     
                     HStack(spacing: 84) {
-                        NavigationLink(destination: SlotMachineView()) {
+                        NavigationLink(destination: SlotMachineView($balance)) {
                             Image("egyptGameIcon1")
                                 .resizable()
                                 .scaledToFit()
