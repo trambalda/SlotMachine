@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var coins = 16000
+    @State private var balance = 16000
     
     var body: some View {
         NavigationView {
@@ -25,12 +25,15 @@ struct ContentView: View {
                     }
                     
                     HStack {
-                        Text("\(coins.formattedWithSeparator)")
+                        Text("\(balance.formattedWithSeparator)")
                             .foregroundColor(.blue)
                             .font(.title3)
                             .fontWeight(.semibold)
                             .padding(.leading, 70)
-                        Image("coin")
+                        Image("coin_wo_border")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 30)
                         Spacer()
                     }
                     .padding(.top, 4)
