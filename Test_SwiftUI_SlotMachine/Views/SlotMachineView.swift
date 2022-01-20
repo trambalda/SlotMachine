@@ -54,9 +54,10 @@ struct SlotMachineView: View {
         }
     }
     
+    // MARK: - ADJUST SPACING & PADDING FOR SMALL AND NORMAL SCREENS
+    
     private func calculateHeight(width: CGFloat) -> CGFloat {
-        let padding = calculatePadding(width: width) / 2
-        return 3 * (width - CGFloat(padding)) / CGFloat(Reels.totalCount)
+        return 3 * width / CGFloat(Reels.totalCount)
     }
     
     private func calculatePadding(width: CGFloat) -> CGFloat {
@@ -64,7 +65,7 @@ struct SlotMachineView: View {
     }
 
     private func calculateInvertedPadding(width: CGFloat) -> CGFloat {
-        return width < 400 ? 0 : 40
+        return width < 400 ? 10 : 40
     }
 
     // MARK: - BODY
@@ -208,10 +209,9 @@ struct SlotMachineView: View {
                         .background(Color(Color.RGBColorSpace.sRGB, red: 0, green: 0, blue: 0, opacity: 0.4))
                         .cornerRadius(10)
                     }
-                    .padding(.top, calculateInvertedPadding(width: geometry.size.width))
                     
                 } // VStack
-                .padding(.top, calculateInvertedPadding(width: geometry.size.width))
+                .padding(.top, -calculatePadding(width: geometry.size.width) + 10)
                 
             } // GeometryReader
             
