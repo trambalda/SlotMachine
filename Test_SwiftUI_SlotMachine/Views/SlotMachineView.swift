@@ -8,24 +8,58 @@
 import SwiftUI
 
 struct SlotMachineView: View {
+    @Environment(\.presentationMode) var presentationMode
     @State private var isScrollDown = true
     @State private var reels: [[Int]]
     private let model = SlotMachineModel()
     
-    @Binding var balance: Int
-    @State private var bet = 25
-    private let betStep = 25
-    @State private var profit = 0
+    @Binding private var balance: Int
     
+    private let betStep = 25
+    @State private var localBalance: Int
+    @State private var bet = 25
+    @State private var profit = 0
+    @State private var isGameOver = false
+    @State private var isShowWin = false
+    @State private var win = 0
+
     init(_ balance: Binding<Int>) {
         _reels = State(initialValue: model.fillReelsWithNewData())
         _balance = balance
+        _localBalance = State(initialValue: balance.wrappedValue)
     }
+    
+    // MARK: - GAME LOGIC
     
     private func changeBet(isIncrease: Bool) {
         bet = isIncrease ? bet + betStep : bet - betStep
+        if bet > localBalance { bet = localBalance }
         if bet < 25 { bet = 25 }
-        if bet > balance { bet = balance }
+    }
+    
+    private func makeBet() {
+        localBalance -= bet
+    }
+    
+    private func checkWin() {
+        let i = isScrollDown ? 0 : Reels.imagesPerReel - 3
+        if reels[0][i] == reels[1][i] && reels[1][i] == reels[2][i] ||
+            reels[0][i+1] == reels[1][i+1] && reels[1][i+1] == reels[2][i+1] ||
+            reels[0][i+2] == reels[1][i+2] && reels[1][i+2] == reels[2][i+2] {
+            win = bet * 10
+            localBalance += win
+            profit += win
+            isShowWin = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                isShowWin = false
+            }
+        } else {
+            checkCanContinueGame()
+        }
+    }
+    
+    private func checkCanContinueGame() {
+        isGameOver = localBalance < bet
     }
     
     // MARK: - SLOT ANIMATION
@@ -75,6 +109,7 @@ struct SlotMachineView: View {
             Image("background")
                 .resizable()
                 .ignoresSafeArea(.all)
+            
             GeometryReader { geometry in
                 VStack() {
                     
@@ -82,18 +117,36 @@ struct SlotMachineView: View {
                     
                     ScrollViewReader { value in
                         VStack {
-                            HStack() {
-                                ForEach(0 ..< Reels.totalCount) { index in
-                                    ReelView(reel: $reels[index], startIndex: index * Reels.imagesPerReel)
+                            ZStack {
+                                HStack() {
+                                    ForEach(0 ..< Reels.totalCount) { index in
+                                        ReelView(reel: $reels[index], startIndex: index * Reels.imagesPerReel)
+                                    }
                                 }
-                            }
-                            .padding(calculatePadding(width: geometry.size.width))
-                            .frame(height: self.calculateHeight(width: geometry.size.width))
+                                .padding(calculatePadding(width: geometry.size.width))
+                                .frame(height: self.calculateHeight(width: geometry.size.width))
+                                
+                                HStack() {
+                                    Text("WIN: \(win.formattedWithSeparator)")
+                                        .font(.title)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.white)
+                                    Image("coin_wo_border")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 35, height: 35)
+                                } // HStack
+                                .shadow(color: .black, radius: 1, x: 0, y: 0)
+                                .padding(50)
+                                .background(Color(Color.RGBColorSpace.sRGB, red: 0, green: 0, blue: 0, opacity: 0.8))
+                                .cornerRadius(10)
+                                .opacity(isShowWin ? 1 : 0)
+                            } // ZStack
                             
                             // MARK: - BALANCE INFO
                             
                             HStack() {
-                                Text("BALANCE: \(balance.formattedWithSeparator)")
+                                Text("BALANCE: \(localBalance.formattedWithSeparator)")
                                     .font(.title)
                                     .fontWeight(.bold)
                                     .foregroundColor(.white)
@@ -109,9 +162,11 @@ struct SlotMachineView: View {
                         // MARK: - SPIN BUTTON
                         
                         Button {
+                            makeBet()
                             reels = model.fillReelsWithNewData(isScrollDown)
                             scrollReels(value: value)
                             isScrollDown.toggle()
+                            checkWin()
                         } label: {
                             ZStack {
                                 Image("spinButton")
@@ -129,7 +184,10 @@ struct SlotMachineView: View {
                             .shadow(color: .black, radius: 1, x: 0, y: 0)
                             .frame(width: 100, height: 100)
                             .padding(.bottom, calculateInvertedPadding(width: geometry.size.width))
+                            .opacity(isGameOver ? 0.5 : 1)
                         }
+                        .disabled(isGameOver || isShowWin)
+                        
                     } // ScrollViewReader
                     
                     
@@ -179,7 +237,10 @@ struct SlotMachineView: View {
                     // MARK: - EXIT BUTTON & WIN INFO
                     
                     HStack(spacing: 40) {
-                        Button { } label: {
+                        Button {
+                            balance = localBalance
+                            self.presentationMode.wrappedValue.dismiss()
+                        } label: {
                             Text("EXIT")
                                 .font(.title)
                                 .fontWeight(.bold)
@@ -218,6 +279,9 @@ struct SlotMachineView: View {
         } // ZStack
         .navigationBarHidden(true)
         .statusBar(hidden: true)
+        .onAppear {
+            checkCanContinueGame()
+        }
     }
     
 }

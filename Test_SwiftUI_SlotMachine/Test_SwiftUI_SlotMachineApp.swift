@@ -12,6 +12,7 @@ struct Test_SwiftUI_SlotMachineApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+//            SlotMachineView(.constant(10000))
         }
     }
 }

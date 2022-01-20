@@ -13,7 +13,7 @@ enum Reels {
     static let totalCount = 3
     
     /// Images that will be added to a reel.
-    static let images = ["diamond", "bar", "bell", "cherry", "clever"] //, "banana", "coin", "heart", "seven"]
+    static let images = ["diamond", "bar", "bell", "cherry", "clever"] //, "seven", "banana", "coin", "heart", ]
     
     /// Amount images per one reel. Need be more or equal 6.
     static let imagesPerReel = 6

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2126A18D27994EBB009F778B /* NavigationLazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2126A18C27994EBB009F778B /* NavigationLazyView.swift */; };
 		213DA6A527977BF6000AD8BB /* SlotMachineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213DA6A427977BF6000AD8BB /* SlotMachineView.swift */; };
 		213DA6A727986661000AD8BB /* ReelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213DA6A627986661000AD8BB /* ReelView.swift */; };
 		213DA6AB27988A4B000AD8BB /* SlotMachineModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213DA6AA27988A4A000AD8BB /* SlotMachineModel.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2126A18C27994EBB009F778B /* NavigationLazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLazyView.swift; sourceTree = "<group>"; };
 		213DA6A427977BF6000AD8BB /* SlotMachineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlotMachineView.swift; sourceTree = "<group>"; };
 		213DA6A627986661000AD8BB /* ReelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReelView.swift; sourceTree = "<group>"; };
 		213DA6AA27988A4A000AD8BB /* SlotMachineModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlotMachineModel.swift; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 			isa = PBXGroup;
 			children = (
 				213DA6B42798B6D9000AD8BB /* Extensions.swift */,
+				2126A18C27994EBB009F778B /* NavigationLazyView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -182,6 +185,7 @@
 				213DA6A727986661000AD8BB /* ReelView.swift in Sources */,
 				216D9C0027976EAA000CE0B5 /* Test_SwiftUI_SlotMachineApp.swift in Sources */,
 				213DA6B32798B6BF000AD8BB /* Reels.swift in Sources */,
+				2126A18D27994EBB009F778B /* NavigationLazyView.swift in Sources */,
 				213DA6B52798B6D9000AD8BB /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

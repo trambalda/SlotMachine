@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 class SlotMachineModel {
     private var reels: [[Int]] = []
@@ -31,5 +32,6 @@ class SlotMachineModel {
         }
         return reels
     }
+    
 }
 
